@@ -1,0 +1,16 @@
+{
+  "name": "ultrastar-es-rss-scraper",
+  "version": "1.0.0",
+  "description": "This is a scraper to download the RSS feed from Ultrastar ES and reformat it for flexget.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andy Savage <andy@savage.hk>",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "osmosis": "^1.1.10",
+    "rss": "^1.2.2"
+  }
+}
