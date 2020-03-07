@@ -1,4 +1,4 @@
-*.rss
-.env
 node_modules/**
+.env
+*.rss
 output/**

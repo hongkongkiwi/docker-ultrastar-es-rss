@@ -4,6 +4,7 @@
   "description": "This is a scraper to download the RSS feed from Ultrastar ES and reformat it for flexget.",
   "main": "index.js",
   "scripts": {
+    "run": "node index.js /output/output.rss",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Andy Savage <andy@savage.hk>",
