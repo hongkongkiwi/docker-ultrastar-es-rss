@@ -9,6 +9,7 @@
   "author": "Andy Savage <andy@savage.hk>",
   "license": "MIT",
   "dependencies": {
+    "commander": "^4.1.1",
     "dotenv": "^8.2.0",
     "osmosis": "^1.1.10",
     "rss": "^1.2.2"

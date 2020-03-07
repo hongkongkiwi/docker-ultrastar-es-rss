@@ -2,10 +2,32 @@ const osmosis = require('osmosis')
 const RSS = require('rss')
 const fs = require('fs').promises
 require('dotenv').config()
+const program = require('commander')
+program.version(require('./package').version)
 
-const inputRSSURL = process.env.ULTRASTAR_ES_RSS_URL
+program
+  .name(require('./package').name)
+  .usage("[options] <output_file.rss>")
+  .option('-d, --debug', 'output extra debugging', false)
+  .requiredOption('-u, --username <value>', 'ultrastar-es.org username', process.env.ULTRASTAR_ES_USERNAME)
+  .requiredOption('-p, --password <value>', 'ultrastar-es.org password', process.env.ULTRASTAR_ES_PASSWORD)
+  .requiredOption('-r, --rss-feed <value>', 'ultrastar-es.org rss feed url', process.env.ULTRASTAR_ES_RSS_URL)
 
-const outputRSSFile = "songs.rss"
+program.parse(process.argv)
+
+if (program.args.length == 0 || program.args[0].length == 0) {
+  program.help((text) => {
+    return "ERROR: Must pass an output_file.rss name\n\n" + text
+  })
+}
+
+if (program.debug) {
+  console.log('Program Inputs')
+  console.log(program.opts());
+}
+
+const inputRSSUrl = program.opts().rssFeed
+const outputRSSFile = program.args[0]
 
 let feed = new RSS({
   title: 'Ultrastar ES songs',
@@ -22,8 +44,8 @@ osmosis.config('keep_data', true)
 osmosis
 .get('https://ultrastar-es.org/foro/ucp.php?mode=login')
 .submit("#login", {
-  username: process.env.ULTRASTAR_ES_USERNAME,
-  password: process.env.ULTRASTAR_ES_PASSWORD
+  username: program.opts().username,
+  password: program.opts().password
 })
 .get(inputRSSUrl)
 .find('item')
@@ -57,7 +79,13 @@ osmosis
   const xml = feed.xml({indent: true})
   return fs.writeFile(outputRSSFile, xml)
 })
-//.log(console.log)
+.log((log) => {
+  if (program.opts().debug)
+    console.log(log)
+})
 .error(console.error)
-//.debug(console.log)
+.debug((log) => {
+  if (program.opts().debug)
+    console.log(log)
+})
 
